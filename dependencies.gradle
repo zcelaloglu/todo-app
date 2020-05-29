@@ -1,0 +1,85 @@
+ext.app = [
+        id         : 'com.celaloglu.zafer.todos',
+
+        versionCode: 1,
+        versionName: '1.0',
+
+        minSdk     : 21,
+        targetSdk  : 29,
+        compileSdk : 29,
+]
+
+ext.versions = [
+
+        kotlin                 : '1.3.71',
+        androidGradlePlugin    : '3.6.3',
+        arch                   : '2.3.0-alpha03',
+        appcompatVersion       : '1.3.0-alpha01',
+        constraintLayoutVersion: '1.1.3',
+        supportV4Version       : '1.0.0',
+        materialVersion        : '1.2.0-alpha06',
+        coroutines             : '1.3.7',
+        coroutinesCallAdapter  : '0.9.2',
+        koin                   : '2.1.5',
+        playServices           : '17.0.0',
+        glide                  : '4.11.0',
+        room                   : '2.2.5',
+
+        //Testing
+        junitVersion            : '4.13',
+        androidxJunitVersion    : '1.1.1',
+        truthVersion            : '1.0',
+        coroutinesCoreVersion   : '1.3.3',
+        robolectricVersion      : '4.3',
+        runnerVersion           : '1.2.0',
+        rulesVersion            : '1.2.0',
+        archComponentTestVersion: '2.1.0'
+]
+
+ext.gradlePlugins = [
+
+        android: "com.android.tools.build:gradle:$versions.androidGradlePlugin",
+
+        kotlin : "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+]
+
+ext.libraries = [
+
+        appCompat                : "androidx.appcompat:appcompat:$versions.appcompatVersion",
+        constraintLayout         : "androidx.constraintlayout:constraintlayout:$versions.constraintLayoutVersion",
+        supportV4                : "androidx.legacy:legacy-support-v4:$versions.supportV4Version",
+        material                 : "com.google.android.material:material:$versions.materialVersion",
+
+        arch                     : "android.arch.lifecycle:extensions:$versions.arch",
+        lifecycleViewmodel       : "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.arch",
+
+        coroutinesCore           : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines",
+        coroutinesAndroid        : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines",
+
+        kotlin                   : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
+
+        koin                     : "org.koin:koin-android:$versions.koin",
+        koinViewmodel            : "org.koin:koin-androidx-viewmodel:$versions.koin",
+
+        databindingCompiler      : "androidx.databinding:databinding-compiler:$versions.androidGradlePlugin",
+
+        location                 : "com.google.android.gms:play-services-location:$versions.playServices",
+        maps                     : "com.google.android.gms:play-services-maps:$versions.playServices",
+
+        room                     : "androidx.room:room-runtime:$versions.room",
+        roomKtx                  : "androidx.room:room-ktx:$versions.room",
+        roomCompiler             : "androidx.room:room-compiler:$versions.room"
+]
+
+ext.test = [
+
+        junit            : "junit:junit:$versions.junitVersion",
+        androidxJunit    : "androidx.test.ext:junit:$versions.androidxJunitVersion",
+        coroutinesTest   : "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesCoreVersion",
+        robolectric      : "org.robolectric:robolectric:$versions.robolectricVersion",
+        archComponentTest: "androidx.arch.core:core-testing:$versions.archComponentTestVersion",
+        googleTruth      : "com.google.truth:truth:$versions.truthVersion",
+
+        runner           : "androidx.test:runner:$versions.runnerVersion",
+        rules            : "androidx.test:rules:$versions.rulesVersion"
+]

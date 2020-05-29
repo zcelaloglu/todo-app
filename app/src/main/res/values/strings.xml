@@ -1,0 +1,20 @@
+<resources>
+
+    <string name="app_name">Todos</string>
+    <string name="map_activity_title">Todos Map</string>
+    <string name="menu_save">Save</string>
+    <string name="menu_input_search_hint">Search</string>
+    <string name="menu_location">Location</string>
+    <string name="is_todo_item_completed">Completed?</string>
+    <string name="delete_todo_item_button_text">Delete</string>
+    <string name="add_new_todo_item_title">Add a new Todo</string>
+    <string name="add_new_todo_item_due_date">due date</string>
+    <string name="hint_title_text_input_edit_text">Title</string>
+    <string name="hint_description_text_input_edit_text">Description</string>
+    <string name="warning_missing_title_value">Title cannot be empty!</string>
+    <string name="warning_missing_description_value">Description cannot be empty!</string>
+    <string name="warning_missing_due_date_value">Please enter a valid due date!</string>
+    <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer"</string>
+
+</resources>
