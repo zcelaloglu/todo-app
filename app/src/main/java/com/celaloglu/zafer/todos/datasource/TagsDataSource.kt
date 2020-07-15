@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 
 class TagsDataSource(private val database: ToDoDatabase) {
 
-    suspend fun getTags(id: Int): Flow<List<TagItem>> = flow{
+    suspend fun getTags(id: Int?): Flow<List<TagItem>> = flow{
         val todos = database.toDoDao().getToDoWithTags(id).tags
         emit(todos)
     }

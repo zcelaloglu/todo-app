@@ -13,6 +13,6 @@ data class TagItem(@PrimaryKey(autoGenerate = true)
                    @ColumnInfo(name = "tagId")
                    val tagId: Int? = 0,
                    @ColumnInfo(name = "parentTodoId")
-                   val parentTodoId: Int,
+                   val parentTodoId: Int?,
                    @ColumnInfo(name = "title")
                    val title: String?) : Parcelable

@@ -85,7 +85,7 @@ class CreateUpdateViewModel(private val todoUseCase: TodoUseCase,
 
     fun onDeleteItemClick(item: ToDoItem?) {
         viewModelScope.launch {
-            todoUseCase.deleteTodo(item?.todoId!!)
+            todoUseCase.deleteTodo(item?.todoId)
             _actionType.value = CancelAlarm(item)
         }
     }
@@ -93,7 +93,7 @@ class CreateUpdateViewModel(private val todoUseCase: TodoUseCase,
     private fun setAlarm(alarmTime: Long, item: ToDoItem?) {
         viewModelScope.launch {
             if (id == null) {
-                val todos = (todoUseCase.getTodo().first() as Success<*>).data as List<ToDoItem>
+                val todos = todoUseCase.getTodo().first()
                 val newAddedItem = todos[todos.size - 1]
                 _actionType.value = SetAlarm(alarmTime, newAddedItem)
             } else {
@@ -109,15 +109,15 @@ class CreateUpdateViewModel(private val todoUseCase: TodoUseCase,
                 tagsUseCase.insertTag(tagItem)
             } else {
                 todoUseCase.getTodo().collect {
-                    val todoItem = ((it as Success<*>).data!! as List<ToDoItem>).last()
-                    val tagItem = TagItem(tagId = null, parentTodoId = todoItem.todoId!!, title = text)
+                    val todoItem = it.last()
+                    val tagItem = TagItem(tagId = null, parentTodoId = todoItem.todoId, title = text)
                     tagsUseCase.insertTag(tagItem)
                 }
             }
         }
     }
 
-    fun getTags(todoId: Int) {
+    fun getTags(todoId: Int?) {
         viewModelScope.launch {
             tagsUseCase.getTags(todoId).collect {
                 _actionType.value = GetTags(it)
@@ -127,20 +127,20 @@ class CreateUpdateViewModel(private val todoUseCase: TodoUseCase,
 
     private suspend fun setAlarmAndFinishActivity(uiModel: CreateUpdateModel) {
         if (uiModel.item != null) {
-            if (!uiModel.item?.completed!! && uiModel.completed!!) {
-                _actionType.value = CancelAlarm(uiModel.item!!)
-            } else if (uiModel.item?.completed!! && !uiModel.completed!!) {
-                setAlarm(uiModel.alarmTime!!, uiModel.item)
+            if (!uiModel.item?.completed!! && uiModel.completed) {
+                _actionType.value = CancelAlarm(uiModel.item)
+            } else if (uiModel.item?.completed!! && !uiModel.completed) {
+                setAlarm(uiModel.alarmTime, uiModel.item)
             } else {
                 withContext(Dispatchers.Main) {
-                    _actionType.value = CancelAlarm(uiModel.item!!)
+                    _actionType.value = CancelAlarm(uiModel.item)
                     _actionType.value = FinishActivity
                 }
-                setAlarm(uiModel.alarmTime!!, uiModel.item)
+                setAlarm(uiModel.alarmTime, uiModel.item)
             }
         } else {
-            if (!uiModel.completed!!) {
-                setAlarm(uiModel.alarmTime!!, uiModel.item)
+            if (!uiModel.completed) {
+                setAlarm(uiModel.alarmTime, uiModel.item)
             }
             withContext(Dispatchers.Main) {
                 _actionType.value = FinishActivity

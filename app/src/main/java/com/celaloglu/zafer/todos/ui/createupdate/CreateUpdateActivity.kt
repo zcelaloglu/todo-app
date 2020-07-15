@@ -60,7 +60,7 @@ class CreateUpdateActivity : BaseActivity<ActivityCreateupdateBinding>(), Google
 
         uiModel.item = intent.getParcelableExtra(Constants.INTENT_EXTRA)
         if (uiModel.item != null) {
-            setCurrentToDoItem(uiModel.item!!)
+            setCurrentToDoItem(uiModel.item)
         } else {
             supportActionBar?.title = getString(R.string.add_new_todo_item_title)
             binding.dueDate.text = getString(R.string.add_new_todo_item_due_date)
@@ -168,15 +168,15 @@ class CreateUpdateActivity : BaseActivity<ActivityCreateupdateBinding>(), Google
         }
     }
 
-    private fun getLocationCallback(): LocationCallback {
+    private fun getLocationCallback(): LocationCallback? {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult?) {
-                uiModel.latitude = result?.lastLocation?.latitude!!
-                uiModel.longitude = result.lastLocation?.longitude!!
-                binding.location.text = LocationFormatter.format(result.lastLocation?.latitude!!, result.lastLocation.longitude)
+                uiModel.latitude = result?.lastLocation?.latitude
+                uiModel.longitude = result?.lastLocation?.longitude
+                binding.location.text = LocationFormatter.format(result?.lastLocation?.latitude, result?.lastLocation?.longitude)
             }
         }
-        return locationCallback!!
+        return locationCallback
     }
 
     private fun getLocationRequest(): LocationRequest {
@@ -193,14 +193,14 @@ class CreateUpdateActivity : BaseActivity<ActivityCreateupdateBinding>(), Google
         binding.dueDateButton.setOnClickListener {
             val calendar = Calendar.getInstance()
             if (uiModel.item != null) {
-                calendar.set(Calendar.DAY_OF_MONTH, DateFormatter.getDateElementFrom(uiModel.item!!.dueDate, 0))
-                calendar.set(Calendar.MONTH, DateFormatter.getDateElementFrom(uiModel.item!!.dueDate, 1) - 1)
-                calendar.set(Calendar.YEAR, DateFormatter.getDateElementFrom(uiModel.item!!.dueDate, 2))
+                calendar.set(Calendar.DAY_OF_MONTH, DateFormatter.getDateElementFrom(uiModel.item?.dueDate, 0))
+                calendar.set(Calendar.MONTH, DateFormatter.getDateElementFrom(uiModel.item?.dueDate, 1) - 1)
+                calendar.set(Calendar.YEAR, DateFormatter.getDateElementFrom(uiModel.item?.dueDate, 2))
             }
             datepickerdialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 uiModel.dueDate = DateFormatter.formatForUI(dayOfMonth, month + 1, year)
                 calendar.set(year, month, dayOfMonth)
-                binding.dueDate.text = DateFormatter.format(uiModel.dueDate!!)
+                binding.dueDate.text = DateFormatter.format(uiModel.dueDate)
                 uiModel.alarmTime = calendar.time.time + TimeUnit.SECONDS.toMillis(20)
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
             datepickerdialog.datePicker.minDate = System.currentTimeMillis() - 1000
@@ -246,19 +246,19 @@ class CreateUpdateActivity : BaseActivity<ActivityCreateupdateBinding>(), Google
     }
 
     private fun getTags() {
-        viewModel.getTags(uiModel.item?.todoId!!)
+        viewModel.getTags(uiModel.item?.todoId)
     }
 
-    private fun setCurrentToDoItem(item: ToDoItem) {
-        viewModel.setItemId(item.todoId!!)
+    private fun setCurrentToDoItem(item: ToDoItem?) {
+        viewModel.setItemId(item?.todoId)
         binding.item = item
-        supportActionBar?.title = item.title
-        binding.title.text = Editable.Factory.getInstance().newEditable(item.title)
-        binding.descriptionText.text = Editable.Factory.getInstance().newEditable(item.description)
-        binding.dueDate.text = DateFormatter.format(item.dueDate)
-        uiModel.dueDate = item.dueDate
-        uiModel.alarmTime = DateFormatter.getDateFrom(item.dueDate).time + TimeUnit.SECONDS.toMillis(20)
-        binding.isCompleted.isChecked = item.completed
+        supportActionBar?.title = item?.title
+        binding.title.text = Editable.Factory.getInstance().newEditable(item?.title)
+        binding.descriptionText.text = Editable.Factory.getInstance().newEditable(item?.description)
+        binding.dueDate.text = DateFormatter.format(item?.dueDate)
+        uiModel.dueDate = item?.dueDate
+        uiModel.alarmTime = DateFormatter.getDateFrom(item?.dueDate).time + TimeUnit.SECONDS.toMillis(20)
+        binding.isCompleted.isChecked = item?.completed ?: false
     }
 
     private fun observeActionState() {
@@ -326,7 +326,7 @@ class CreateUpdateActivity : BaseActivity<ActivityCreateupdateBinding>(), Google
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             intent.setClass(this, AlarmReceiver::class.java)
-        return PendingIntent.getBroadcast(this, item?.todoId!!, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getBroadcast(this, item?.todoId ?: 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     private fun setAlarmForNotification(alarmTime: Long, item: ToDoItem?) {

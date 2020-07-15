@@ -10,7 +10,7 @@ class TodoUseCase(
 
     suspend fun getTodo() = todoRepository.getTodo()
 
-    suspend fun deleteTodo(id: Int) = todoRepository.deleteTodo(id)
+    suspend fun deleteTodo(id: Int?) = todoRepository.deleteTodo(id)
 
     suspend fun insertTodo(item: ToDoItem) = todoRepository.insertTodo(item)
 

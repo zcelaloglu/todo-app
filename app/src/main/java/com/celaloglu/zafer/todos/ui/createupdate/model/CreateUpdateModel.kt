@@ -7,8 +7,8 @@ data class CreateUpdateModel(
         var dueDate: String? = null,
         var latitude: Double? = null,
         var longitude: Double? = null,
-        var alarmTime: Long? = null,
-        var completed: Boolean? = null,
+        var alarmTime: Long = 1L,
+        var completed: Boolean = false,
         var title: String? = null,
         var description: String? = null
 )

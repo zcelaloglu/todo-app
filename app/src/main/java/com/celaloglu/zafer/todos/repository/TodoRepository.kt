@@ -2,16 +2,15 @@ package com.celaloglu.zafer.todos.repository
 
 import com.celaloglu.zafer.todos.database.ToDoItem
 import com.celaloglu.zafer.todos.datasource.TodoDataSource
-import com.celaloglu.zafer.todos.ui.model.ViewState
 import kotlinx.coroutines.flow.Flow
 
 class TodoRepository(private val dataSource: TodoDataSource) : ITodoRepository {
 
-    override suspend fun getTodo(): Flow<ViewState> {
+    override suspend fun getTodo(): Flow<List<ToDoItem>> {
         return dataSource.getTodos()
     }
 
-    override suspend fun deleteTodo(id: Int) {
+    override suspend fun deleteTodo(id: Int?) {
         return dataSource.deleteTodo(id)
     }
 

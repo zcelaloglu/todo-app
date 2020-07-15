@@ -57,8 +57,8 @@ class TodoListAdapter(activity: TodoListActivity, todos: List<ToDoItem>) :
 
     inner class TodoItemFilter : Filter() {
 
-        override fun performFiltering(search: CharSequence): Filter.FilterResults {
-            val results = Filter.FilterResults()
+        override fun performFiltering(search: CharSequence): FilterResults {
+            val results = FilterResults()
 
             if (TextUtils.isEmpty(search)) {
                 results.count = -1
@@ -82,7 +82,7 @@ class TodoListAdapter(activity: TodoListActivity, todos: List<ToDoItem>) :
             return results
         }
 
-        override fun publishResults(charSequence: CharSequence, results: Filter.FilterResults) {
+        override fun publishResults(charSequence: CharSequence, results: FilterResults) {
             if (results.count > 0) {
                 searchedTodos = (results.values as LinkedHashMap<String, ArrayList<ToDoItem>>)["todos"]
                 notifyDataSetChanged()

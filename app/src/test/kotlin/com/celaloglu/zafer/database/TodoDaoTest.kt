@@ -8,17 +8,24 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import com.celaloglu.zafer.BaseTest
+import com.celaloglu.zafer.todos.database.ToDoItem
 import com.google.common.truth.Truth
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.TestCoroutineScope
+import kotlinx.coroutines.test.setMain
 
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)
-class TodoDaoTest: BaseTest() {
+class TodoDaoTest : BaseTest() {
 
     private lateinit var dao: ToDoDao
 
     @Before
-    override fun setup(){
+    override fun setup() {
         super.setup()
         dao = db.toDoDao()
     }
@@ -28,7 +35,9 @@ class TodoDaoTest: BaseTest() {
             = runBlockingTest {
         val todo = TodoItemGenerator.generateTodo()
         dao.insert(todo)
-        Truth.assertThat(dao.getToDos().count()).isEqualTo(1)
+        dao.getToDos().collect {
+            Truth.assertThat(it.count()).isEqualTo(1)
+        }
     }
 
     @Test
@@ -37,7 +46,9 @@ class TodoDaoTest: BaseTest() {
         val todo = TodoItemGenerator.generateTodo()
         dao.insert(todo)
         dao.deleteItem(1)
-        Truth.assertThat(dao.getToDos().count()).isEqualTo(0)
+        dao.getToDos().collect {
+            Truth.assertThat(it.count()).isEqualTo(0)
+        }
     }
 
     @Test
@@ -47,7 +58,10 @@ class TodoDaoTest: BaseTest() {
         dao.insert(todo)
         val updatedTodo = TodoItemGenerator.generateUpdatedTodo()
         dao.updateItem(updatedTodo)
-        Truth.assertThat(dao.getToDos()[0].dueDate).isEqualTo("30/05/2020")
+        dao.getToDos().collect {
+            val dueDate = it[0].dueDate
+            Truth.assertThat(dueDate).isEqualTo("30/05/2020")
+        }
     }
 
     @Test
@@ -56,6 +70,8 @@ class TodoDaoTest: BaseTest() {
         val todo = TodoItemGenerator.generateTodo()
         dao.insert(todo)
         dao.updateItem(1)
-        Truth.assertThat(dao.getToDos()[0].completed).isEqualTo(true)
+        dao.getToDos().collect {
+            Truth.assertThat(it[0].completed).isEqualTo(true)
+        }
     }
 }

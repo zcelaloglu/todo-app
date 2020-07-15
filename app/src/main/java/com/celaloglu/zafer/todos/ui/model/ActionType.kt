@@ -7,7 +7,7 @@ import com.celaloglu.zafer.todos.database.ToDoItem
 sealed class ActionType
 
 class Warning(@StringRes val message: Int) : ActionType()
-class CancelAlarm(val item: ToDoItem) : ActionType()
+class CancelAlarm(val item: ToDoItem?) : ActionType()
 class SetAlarm(val alarmTime: Long, val item: ToDoItem?) : ActionType()
 object FinishActivity : ActionType()
 object SaveTags : ActionType()

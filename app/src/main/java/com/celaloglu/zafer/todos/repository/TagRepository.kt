@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 class TagRepository(private val dataSource: TagsDataSource) : ITagRepository {
 
-    override suspend fun getTags(id: Int): Flow<List<TagItem>> {
+    override suspend fun getTags(id: Int?): Flow<List<TagItem>> {
         return dataSource.getTags(id)
     }
 

@@ -8,7 +8,7 @@ class TagsUseCase(
         private val tagRepository: ITagRepository
 ): KoinComponent {
 
-    suspend fun getTags(id: Int) = tagRepository.getTags(id)
+    suspend fun getTags(id: Int?) = tagRepository.getTags(id)
 
     suspend fun insertTag(tagItem: TagItem) = tagRepository.insertTag(tagItem)
 }

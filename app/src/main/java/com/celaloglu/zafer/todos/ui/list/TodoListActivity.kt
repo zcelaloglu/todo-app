@@ -82,16 +82,16 @@ class TodoListActivity : BaseActivity<ActivityTodolistBinding>(),
     private fun observeUiState() {
         viewModel.viewState.observe(this, Observer {
             when (it) {
-                is Success<*> -> {
-                    adapter = TodoListAdapter(this, it.data!! as List<ToDoItem>)
+                is Success -> {
+                    adapter = TodoListAdapter(this, it.data)
                     binding.todosRv.adapter = adapter
                     adapter.notifyDataSetChanged()
                     binding.fab.setOnClickListener {
                         CreateUpdateActivity.start(this, null)
                     }
                 }
-                is Location<*> -> {
-                    this.locations = it.data!! as ArrayList<LatLng>
+                is Location -> {
+                    this.locations = it.data
                 }
             }
         })
